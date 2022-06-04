@@ -1,0 +1,17 @@
+.square{
+    border-radius: 0px;
+}
+
+.jumbotron{
+    background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
+    color: #fff;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ant-menu-item{
+    display: flex !important;
+    align-items: center;
+}
