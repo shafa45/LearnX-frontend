@@ -23,10 +23,10 @@ export default function Login() {
       console.log('Login response: ', response);
       // console.log(response.data.message);
       // setLoading(false);
-      toast.success(response.data.message + ' Redirecting to login page...');
+      toast.success(response.data.message + ' Redirecting to dashboard...');
 
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.href = '/';
       }, 3000);
     } catch (err) {
       setLoading(false);
