@@ -15,11 +15,14 @@ export default function Register() {
 
     try {
       setLoading(true);
-      const response = await axios.post(`http://localhost:8000/api/register`, {
-        name,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_TEST}/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
       // console.log(response.data.message);
       setLoading(false);
       toast.success(response.data.message + ' Redirecting to login page...');
