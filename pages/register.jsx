@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -9,12 +10,20 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.table({ name, email, password });
-    const { data } = await axios.post(`http://localhost:8000/api/register`, {
-      name,
-      email,
-      password,
-    });
-    console.log('REGISTER RESPONSE: ', data);
+    try {
+      const response = await axios.post(`http://localhost:8000/api/register`, {
+        name,
+        email,
+        password,
+      });
+      // console.log(response.data.message);
+      toast.success(response.data.message + ' Redirecting to login page...');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 3000);
+    } catch (err) {
+      toast.error(err.response.data.message);
+    }
   };
   return (
     <>
