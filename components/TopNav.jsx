@@ -3,6 +3,7 @@ import { Menu } from 'antd';
 import Link from 'next/link';
 import {
   AppstoreOutlined,
+  CoffeeOutlined,
   LoginOutlined,
   LogoutOutlined,
   UserAddOutlined,
@@ -12,12 +13,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
-const { Item } = Menu;
+const { Item, SubMenu } = Menu;
 
 export default function TopNav() {
   const [current, setCurrent] = useState('');
 
   const { state, dispatch } = useContext(Context);
+  const { user } = state;
 
   const router = useRouter();
 
@@ -26,7 +28,7 @@ export default function TopNav() {
   }, [typeof window !== 'undefined' && window.location.pathname]);
 
   const handleLogout = async () => {
-    if (!localStorage.getItem('user')) return;
+    if (!user) return;
     try {
       dispatch({ type: 'LOGOUT' });
       localStorage.removeItem('user');
@@ -50,33 +52,45 @@ export default function TopNav() {
         </Link>
       </Item>
 
-      <Item
-        key='/login'
-        onClick={(e) => setCurrent(e.key)}
-        icon={<LoginOutlined />}
-      >
-        <Link href='/login'>
-          <a>Login</a>
-        </Link>
-      </Item>
+      {!user && (
+        <>
+          <Item
+            key='/login'
+            onClick={(e) => setCurrent(e.key)}
+            icon={<LoginOutlined />}
+          >
+            <Link href='/login'>
+              <a>Login</a>
+            </Link>
+          </Item>
 
-      <Item
-        key='/register'
-        onClick={(e) => setCurrent(e.key)}
-        icon={<UserAddOutlined />}
-      >
-        <Link href='/register'>
-          <a>Register</a>
-        </Link>
-      </Item>
+          <Item
+            key='/register'
+            onClick={(e) => setCurrent(e.key)}
+            icon={<UserAddOutlined />}
+          >
+            <Link href='/register'>
+              <a>Register</a>
+            </Link>
+          </Item>
+        </>
+      )}
 
-      <Item
-        style={{ marginLeft: 'auto' }}
-        onClick={handleLogout}
-        icon={<LogoutOutlined />}
-      >
-        Logout
-      </Item>
+      {user && (
+        <SubMenu
+          icon={<CoffeeOutlined />}
+          title={user.name}
+          style={{ marginLeft: 'auto' }}
+        >
+          <Item
+            // style={{ marginLeft: 'auto' }}
+            onClick={handleLogout}
+            icon={<LogoutOutlined />}
+          >
+            Logout
+          </Item>
+        </SubMenu>
+      )}
     </Menu>
   );
 }
