@@ -1,22 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import {
   AppstoreOutlined,
   LoginOutlined,
+  LogoutOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
+import { Context } from '../context';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 const { Item } = Menu;
 
 export default function TopNav() {
   const [current, setCurrent] = useState('');
 
+  const { state, dispatch } = useContext(Context);
+
+  const router = useRouter();
+
   useEffect(() => {
     typeof window !== 'undefined' && setCurrent(window.location.pathname);
   }, [typeof window !== 'undefined' && window.location.pathname]);
+
+  const handleLogout = async () => {
+    if (!localStorage.getItem('user')) return;
+    try {
+      dispatch({ type: 'LOGOUT' });
+      localStorage.removeItem('user');
+      const { data } = await axios.get('/api/logout');
+      router.push('/login');
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
-    <Menu mode='horizontal' selectedKeys={[current]}>
+    <Menu mode='horizontal' selectedKeys={[current]} className='p'>
       <Item
         key='/'
         onClick={(e) => setCurrent(e.key)}
@@ -45,6 +68,14 @@ export default function TopNav() {
         <Link href='/register'>
           <a>Register</a>
         </Link>
+      </Item>
+
+      <Item
+        style={{ marginLeft: 'auto' }}
+        onClick={handleLogout}
+        icon={<LogoutOutlined />}
+      >
+        Logout
       </Item>
     </Menu>
   );
