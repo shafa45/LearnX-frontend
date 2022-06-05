@@ -13,6 +13,7 @@ export default function Login() {
 
   // state
   const { state, dispatch } = useContext(Context);
+  const { user } = state;
 
   // router
   const router = useRouter();
@@ -23,6 +24,12 @@ export default function Login() {
       payload: JSON.parse(localStorage.getItem('user')),
     });
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +60,7 @@ export default function Login() {
     <>
       <h1 className='jumbotron text-center bg-primary square'>Login</h1>
 
-      <div className='container col-md-4 offset-md-4 pb-5'>
+      <div className='container col-md-4 offset-md-4 pb-5 mt-5'>
         <form onSubmit={handleSubmit}>
           <input
             type='email'

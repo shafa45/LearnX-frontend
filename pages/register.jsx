@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SyncOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import { Context } from '../context';
 import { useRouter } from 'next/router';
 
 export default function Register() {
@@ -11,7 +12,27 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // state
+  const { state, dispatch } = useContext(Context);
+  const { user } = state;
+
+  // router
   const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      dispatch({
+        type: 'LOGIN',
+        payload: JSON.parse(localStorage.getItem('user')),
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      router.push('/');
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,7 +60,7 @@ export default function Register() {
     <>
       <h1 className='jumbotron text-center bg-primary square'>Register</h1>
 
-      <div className='container col-md-4 offset-md-4 pb-5'>
+      <div className='container col-md-4 offset-md-4 pb-5 mt-5 '>
         <form onSubmit={handleSubmit}>
           <input
             type='text'
