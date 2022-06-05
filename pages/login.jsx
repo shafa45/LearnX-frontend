@@ -1,9 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SyncOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { Context } from '../context';
+import { useRouter } from 'next/router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,7 +13,16 @@ export default function Login() {
 
   // state
   const { state, dispatch } = useContext(Context);
-  // console.log('STATE ', state);
+
+  // router
+  const router = useRouter();
+
+  useEffect(() => {
+    dispatch({
+      type: 'LOGIN',
+      payload: JSON.parse(localStorage.getItem('user')),
+    });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,14 +35,16 @@ export default function Login() {
         password,
       });
 
-      // console.log('Login response: ', response);
       // console.log(response.data.message);
-      // setLoading(false);
+      setLoading(false);
       dispatch({ type: 'LOGIN', payload: response.data.user });
+      // save in local storage
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       toast.success(response.data.message + ' Redirecting to dashboard...');
 
+      // redirect
       setTimeout(() => {
-        window.location.href = '/';
+        router.push('/');
       }, 3000);
     } catch (err) {
       setLoading(false);
