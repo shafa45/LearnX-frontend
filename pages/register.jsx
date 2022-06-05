@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { SyncOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -72,6 +73,13 @@ export default function Register() {
             {loading ? <SyncOutlined spin /> : 'Submit'}
           </button>
         </form>
+
+        <p className='text-center p-3 '>
+          Already have an account?
+          <Link href='/login'>
+            <a> Login</a>
+          </Link>
+        </p>
       </div>
     </>
   );
