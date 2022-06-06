@@ -81,10 +81,16 @@ export default function Login() {
           </button>
         </form>
 
-        <p className='text-center p-3 '>
+        <p className='text-center pt-3 '>
           Don't have an account?
           <Link href='/register'>
             <a> Register</a>
+          </Link>
+        </p>
+
+        <p className='text-center pt'>
+          <Link href='/forgot-password'>
+            <a className='text-danger'>Forgot password ?</a>
           </Link>
         </p>
       </div>
