@@ -33,8 +33,8 @@ export default function TopNav() {
       dispatch({ type: 'LOGOUT' });
       localStorage.removeItem('user');
       const { data } = await axios.get('/api/logout');
-      router.push('/login');
       toast.success(data.message);
+      router.push('/login');
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -80,10 +80,14 @@ export default function TopNav() {
         <SubMenu
           icon={<CoffeeOutlined />}
           title={user.name}
-          style={{ marginLeft: 'auto' }}
+          style={{
+            marginLeft: 'auto',
+          }}
+          key='/logoutSub'
         >
           <Item
             // style={{ marginLeft: 'auto' }}
+            key='/logout'
             onClick={handleLogout}
             icon={<LogoutOutlined />}
           >

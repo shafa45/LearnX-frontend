@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 // initial state
-const initialState = {
+const intialState = {
   user: null,
 };
 
@@ -22,51 +22,58 @@ const rootReducer = (state, action) => {
   }
 };
 
-// create context provider
+// context provider
 const Provider = ({ children }) => {
-  const [state, dispatch] = useReducer(rootReducer, initialState);
+  const [state, dispatch] = useReducer(rootReducer, intialState);
 
+  // router
   const router = useRouter();
 
   useEffect(() => {
     dispatch({
       type: 'LOGIN',
-      payload: JSON.parse(localStorage.getItem('user')),
+      payload: JSON.parse(window.localStorage.getItem('user')),
     });
   }, []);
 
   axios.interceptors.response.use(
-    (response) => response, //any status code that is within the range of 2xx cause this function to trigger
-    (error) => {
-      // anystatus code that falls outside the range of 2xx cause this function to be called
-      const res = error.response;
-      if (
-        res.response.status === 401 &&
-        res.config &&
-        !res.config.__isRetryRequest
-      ) {
+    function (response) {
+      // any status code that lie within the range of 2XX cause this function
+      // to trigger
+      return response;
+    },
+    function (error) {
+      // any status codes that falls outside the range of 2xx cause this function
+      // to trigger
+      let res = error.response;
+      if (res.status === 401 && res.config && !res.config.__isRetryRequest) {
         return new Promise((resolve, reject) => {
           axios
             .get('/api/logout')
-            .then(() => {
-              localStorage.removeItem('user');
+            .then((data) => {
+              console.log('/401 error > logout');
               dispatch({ type: 'LOGOUT' });
-
+              window.localStorage.removeItem('user');
               router.push('/login');
             })
-            .catch((error) => {
-              localStorage.removeItem('user');
-              dispatch({ type: 'LOGOUT' });
+            .catch((err) => {
+              console.log('AXIOS INTERCEPTORS ERR', err);
               reject(error);
             });
         });
       }
-      return Promise.reject(res);
+      return Promise.reject(error);
     }
   );
 
-  // amy status code that lie whin 200 and 300 cause this function to trigger
-  // and return the response
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const { data } = await axios.get('/api/csrf-token');
+      console.log('CSRF', data);
+      axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken;
+    };
+    getCsrfToken();
+  }, []);
 
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
