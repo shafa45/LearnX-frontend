@@ -29,21 +29,60 @@ const forgotPassword = () => {
     }
   }, []);
 
-  // display new password text field on success
+  // handle submit
   const handleSubmit = async (e) => {
+    if (success) handleResetPassword(e);
+    else handleForgotPassword(e);
+  };
+
+  // handle forgot password
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
     // console.log(email)
+    setLoading(true);
     try {
-      setLoading(true);
       const { data } = await axios.post('/api/forgot-password', { email });
       // console.log(data){
+      setLoading(false);
       setSuccess(true);
       toast.success('Please check your email for a code.');
       setCode(data.code);
     } catch (err) {
-      console.log(err.response.data);
-      toast.error(err.response.data);
+      console.log(err.response.data.message);
+      toast.error(err.response.data.message);
       setLoading(false);
+    }
+  };
+
+  // handle reset password
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    // console.log(code, newPassword, confirmPassword);
+    if (newPassword !== confirmPassword) {
+      toast.error('Passwords do not match.');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error('Password must be at least 6 characters.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // console.log('loading in handleResetPassword', loading);
+      const { data } = await axios.post('/api/reset-password', {
+        code,
+        newPassword,
+        confirmPassword,
+        email,
+      });
+      // console.log(data);
+      toast.success(data.message);
+      router.push('/login');
+    } catch (err) {
+      setLoading(false);
+      toast.error(err.response.data.message);
     }
   };
 
@@ -61,6 +100,7 @@ const forgotPassword = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder='Enter email'
             required
+            disabled={success}
           />
           {success ? (
             <>
@@ -90,10 +130,10 @@ const forgotPassword = () => {
               />
               <button
                 type='submit'
-                className='btn btn-primary btn-block mb-4 p-4'
+                className='form-control btn btn-primary btn-block mb-4 p-4'
                 disabled={!code || !newPassword || !confirmPassword || loading}
               >
-                {loading ? <SyncOutlined spin /> : 'Submit'}
+                {loading ? <SyncOutlined spin /> : 'Update Password'}
               </button>
             </>
           ) : (
