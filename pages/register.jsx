@@ -20,15 +20,6 @@ export default function Register() {
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem('user')) {
-      dispatch({
-        type: 'LOGIN',
-        payload: JSON.parse(localStorage.getItem('user')),
-      });
-    }
-  }, []);
-
-  useEffect(() => {
     if (user) {
       router.push('/');
     }

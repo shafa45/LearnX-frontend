@@ -19,13 +19,6 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    dispatch({
-      type: 'LOGIN',
-      payload: JSON.parse(localStorage.getItem('user')),
-    });
-  }, []);
-
-  useEffect(() => {
     if (user) {
       router.push('/');
     }
