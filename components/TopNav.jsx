@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {
   AppstoreOutlined,
   CoffeeOutlined,
+  DashboardOutlined,
   LoginOutlined,
   LogoutOutlined,
   UserAddOutlined,
@@ -13,7 +14,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
-const { Item, SubMenu } = Menu;
+const { Item, SubMenu, ItemGroup } = Menu;
 
 export default function TopNav() {
   const [current, setCurrent] = useState('');
@@ -85,6 +86,11 @@ export default function TopNav() {
           }}
           key='/logoutSub'
         >
+          <Item key='/user' icon={<DashboardOutlined />}>
+            <Link href='/user'>
+              <a>Dashboard</a>
+            </Link>
+          </Item>
           <Item
             // style={{ marginLeft: 'auto' }}
             key='/logout'
