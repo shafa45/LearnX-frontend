@@ -22,13 +22,15 @@ const BecomeInstructor = () => {
     axios
       .post('/api/make-instructor')
       .then((res) => {
+        setLoading(false);
+        // toast.success(res.data.message);
         console.log(res.data);
-        //  window.location.href = res.data
+        window.location.href = res.data.accountLink;
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response.data.message);
         setLoading(false);
-        toast.error('Stripe On Boarding failed. Try Again!');
+        toast.error(err.response.data.message);
       });
   };
 
@@ -49,7 +51,7 @@ const BecomeInstructor = () => {
               </p>
 
               <Button
-                className='mb-3 w-50'
+                className='mb-3 w-50 mx-auto d-flex align-items-center justify-content-center'
                 type='primary'
                 // block
                 shape='round'
