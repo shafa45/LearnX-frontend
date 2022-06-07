@@ -43,7 +43,7 @@ export default function Login() {
       toast.success(response.data.message + ' Redirecting to dashboard...');
 
       // redirect
-      router.push('/');
+      router.push('/user');
     } catch (err) {
       setLoading(false);
       toast.error(err.response.data.message);
