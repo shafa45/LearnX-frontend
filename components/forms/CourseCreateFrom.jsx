@@ -99,10 +99,12 @@ const CourseCreateForm = ({
           </div>
         </div>
 
-        {preview && (
+        {preview ? (
           <div className='col'>
             <Avatar width={200} src={preview} />
           </div>
+        ) : (
+          <div className='col'></div>
         )}
       </div>
 
