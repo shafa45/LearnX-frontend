@@ -44,7 +44,7 @@ export default function TopNav() {
   };
 
   return (
-    <Menu mode='horizontal' selectedKeys={[current]} className='p'>
+    <Menu mode='horizontal' selectedKeys={[current]} className='mb-2'>
       <Item
         key='/'
         onClick={(e) => setCurrent(e.key)}
@@ -124,6 +124,18 @@ export default function TopNav() {
             Logout
           </Item>
         </SubMenu>
+      )}
+
+      {user && user.role && user.role.includes('Instructor') && (
+        <Item
+          key='/instructor'
+          onClick={(e) => setCurrent(e.key)}
+          icon={<TeamOutlined />}
+        >
+          <Link href='/instructor'>
+            <a>Instructor</a>
+          </Link>
+        </Item>
       )}
     </Menu>
   );
