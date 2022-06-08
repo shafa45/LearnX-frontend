@@ -5,15 +5,23 @@ import UserRoute from '../../components/routes/userRoutes';
 import axios from 'axios';
 
 const StripeCallback = () => {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const { user } = state;
 
   useEffect(() => {
-    if (user)
+    if (user) {
       axios.post('/api/get-account-status').then((res) => {
         // window.location.href = '/instructor';
         console.log(res.data);
+        dispatch({
+          type: 'LOGIN',
+          payload: res.data.statusUpdated,
+        });
+
+        localStorage.setItem('user', JSON.stringify(res.data.statusUpdated));
+        window.location.href = '/instructor';
       });
+    }
   }, [user]);
 
   return (
