@@ -35,7 +35,7 @@ const CourseCreate = () => {
     // resize
     Resizer.imageFileResizer(file, 720, 500, 'JPEG', 100, 0, async (url) => {
       try {
-        let data = await axios.post('/api/course/upload-image', {
+        let data = await axios.post('/api/courses/upload-image', {
           image: url,
         });
 
