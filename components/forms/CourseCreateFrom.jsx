@@ -1,4 +1,4 @@
-import { Button, Select } from 'antd';
+import { Avatar, Button, Select } from 'antd';
 
 const { Option } = Select;
 
@@ -8,6 +8,7 @@ const CourseCreateForm = ({
   handleChange,
   values,
   setValues,
+  preview,
 }) => {
   const children = [];
   for (let i = 9.99; i <= 100.99; i++) {
@@ -82,10 +83,10 @@ const CourseCreateForm = ({
         />
       </div>
 
-      <div className='form-row pt-3'>
+      <div className='form-row pt-3 d-flex'>
         <div className='col'>
           <div className='form-group'>
-            <label className='btn btn-outline-secondary btn-block text-left'>
+            <label className='btn btn-outline-secondary btn-block text-left w-100'>
               {values.loading ? 'Uploading...' : 'Upload Image'}
               <input
                 type='file'
@@ -97,6 +98,12 @@ const CourseCreateForm = ({
             </label>
           </div>
         </div>
+
+        {preview && (
+          <div className='col'>
+            <Avatar width={200} src={preview} />
+          </div>
+        )}
       </div>
 
       <div className='row pt-3'>
