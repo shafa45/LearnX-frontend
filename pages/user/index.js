@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import UserRoute from '../../components/routes/userRoutes';
+import UserRoute from '../../components/routes/userRoute';
 import { Context } from '../../context';
 
 const UserIndex = () => {
