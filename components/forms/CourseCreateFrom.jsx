@@ -1,4 +1,4 @@
-import { Avatar, Button, Select } from 'antd';
+import { Avatar, Button, Select, Badge } from 'antd';
 
 const { Option } = Select;
 
@@ -10,6 +10,7 @@ const CourseCreateForm = ({
   setValues,
   preview,
   uploadButtonText,
+  handleImageRemove,
 }) => {
   const children = [];
   for (let i = 9.99; i <= 100.99; i++) {
@@ -102,7 +103,9 @@ const CourseCreateForm = ({
 
         {preview ? (
           <div className='col'>
-            <Avatar width={200} src={preview} />
+            <Badge count='X' onClick={handleImageRemove} className='pointer'>
+              <Avatar width={200} src={preview} />
+            </Badge>
           </div>
         ) : (
           <div className='col'></div>
