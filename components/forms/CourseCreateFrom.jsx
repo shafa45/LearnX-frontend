@@ -115,7 +115,7 @@ const CourseCreateForm = ({
       <div className='row pt-3'>
         <div className='col'>
           <Button
-            onClick={{ handleSubmit }}
+            onClick={handleSubmit}
             disabled={values.loading || values.uploading}
             loading={values.loading}
             type='primary'

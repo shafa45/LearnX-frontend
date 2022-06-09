@@ -55,7 +55,7 @@ const CourseCreate = () => {
     // console.log('Remove Image');
     try {
       setValues({ ...values, loading: true });
-      const res = await axios.post('/api/course/remove-image', { image });
+      const res = await axios.post('/api/courses/remove-image', { image });
 
       setImage({});
       setPreview('');
@@ -68,9 +68,20 @@ const CourseCreate = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(values);
+    try {
+      const { data } = await axios.post('/api/course', {
+        ...values,
+        image,
+      });
+
+      toast.success('Great! Now you can start adding lessons.');
+      router.push('/instructor');
+    } catch (err) {
+      toast.error(err.response.data);
+    }
   };
 
   return (
