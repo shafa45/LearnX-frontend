@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 
 import { toast } from 'react-toastify';
-import UserRoute from '../../components/routes/userRoutes';
+import UserRoute from '../../components/routes/UserRoute';
 
 const BecomeInstructor = () => {
   // state

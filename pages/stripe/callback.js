@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { Context } from '../../context';
 import { SyncOutlined } from '@ant-design/icons';
-import UserRoute from '../../components/routes/userRoutes';
+import UserRoute from '../../components/routes/UserRoute';
 import axios from 'axios';
 
 const StripeCallback = () => {

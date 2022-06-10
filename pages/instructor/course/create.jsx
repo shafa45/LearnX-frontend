@@ -4,6 +4,7 @@ import InstructorRoute from '../../../components/routes/instructorRoute';
 import CourseCreateForm from '../../../components/forms/CourseCreateFrom';
 import Resizer from 'react-image-file-resizer';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 const CourseCreate = () => {
   // state
@@ -21,6 +22,9 @@ const CourseCreate = () => {
   const [image, setImage] = useState({});
   const [preview, setPreview] = useState('');
   const [uploadButtonText, setUploadButtonText] = useState('Upload Image');
+
+  // router
+  const router = useRouter();
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
