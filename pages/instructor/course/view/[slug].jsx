@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import InstructorRoute from '../../../../components/routes/instructorRoute';
+import ReactMarkdown from 'react-markdown';
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
@@ -28,7 +29,7 @@ const CourseView = () => {
         {/* <pre>{JSON.stringify(course, null, 4)}</pre> */}
         {course && (
           <div className='container-fluid pt-2'>
-            <div className='media pt-2'>
+            <div className='media pt-2 '>
               <Avatar
                 size={80}
                 src={course.image ? course.image.Location : '/course.png'}
@@ -53,6 +54,13 @@ const CourseView = () => {
                     </Tooltip>
                   </div>
                 </div>
+              </div>
+            </div>
+            <hr />
+
+            <div className='row'>
+              <div className='col'>
+                <ReactMarkdown children={course.description} />
               </div>
             </div>
           </div>
