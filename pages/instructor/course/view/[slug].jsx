@@ -5,11 +5,19 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import InstructorRoute from '../../../../components/routes/instructorRoute';
 import ReactMarkdown from 'react-markdown';
+import AddLessonForm from '../../../../components/forms/AddLessonForm';
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
   // for lessons
   const [visible, setVisible] = useState(false);
+  const [values, setValues] = useState({
+    tiyle: '',
+    content: '',
+    video: '',
+  });
+
+  const [uploading, setUploading] = useState(false);
 
   const router = useRouter();
   const { slug } = router.query;
@@ -21,6 +29,12 @@ const CourseView = () => {
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
     setCourse(data);
+  };
+
+  // Function for adding lessons
+  const handleAddLesson = (e) => {
+    e.preventDefault();
+    console.log(values);
   };
 
   return (
@@ -86,7 +100,12 @@ const CourseView = () => {
               onCancel={() => setVisible(false)}
               footer={null}
             >
-              show add lession component
+              <AddLessonForm
+                values={values}
+                setValues={setValues}
+                handleAddLesson={handleAddLesson}
+                uploading={uploading}
+              />
             </Modal>
           </div>
         )}
