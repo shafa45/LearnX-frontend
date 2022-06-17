@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import InstructorRoute from '../../../../components/routes/instructorRoute';
 import ReactMarkdown from 'react-markdown';
 import AddLessonForm from '../../../../components/forms/AddLessonForm';
+import { toast } from 'react-toastify';
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
@@ -19,6 +20,7 @@ const CourseView = () => {
 
   const [uploading, setUploading] = useState(false);
   const [uploadBtnText, setUploadBtnText] = useState('Upload Video');
+  const [progress, setProgress] = useState(0);
 
   const router = useRouter();
   const { slug } = router.query;
@@ -38,10 +40,29 @@ const CourseView = () => {
     console.log(values);
   };
 
-  const handleVideo = (e) => {
-    const file = e.target.files[0];
-    setUploadBtnText(file.name);
-    console.log('Handle Video Upload');
+  const handleVideo = async (e) => {
+    try {
+      const file = e.target.files[0];
+      setUploadBtnText(file.name);
+      setUploading(true);
+
+      const videoData = new FormData();
+      videoData.append('video', file);
+      // save progressbar and send video as form data to backend
+      const { data } = await axios.post('/api/course/video-upload', videoData, {
+        onUploadProgress: (e) => {
+          setProgress(Math.round((e.loaded * 100) / e.total));
+        },
+      });
+      // once response is received
+      console.log(data);
+      setValues({ ...values, video: data });
+      setUploading(false);
+    } catch (err) {
+      console.log(err);
+      setUploading(false);
+      toast.error('Video upload failed');
+    }
   };
 
   return (
