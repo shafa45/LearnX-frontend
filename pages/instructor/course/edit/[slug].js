@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import InstructorRoute from '../../../../components/routes/instructorRoute';
-import CourseCreateForm from '../../../../components/forms/CourseCreateFrom';
+import CourseCreateForm from '../../../../components/forms/CourseCreateForm';
 import Resizer from 'react-image-file-resizer';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -29,11 +29,12 @@ const CourseEdit = () => {
 
   useEffect(() => {
     loadCourse();
-  }, []);
+  }, [slug]);
 
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
     setValues(data);
+    if (data && data.image) setImage(data.image);
   };
 
   const handleChange = (e) => {
@@ -65,11 +66,28 @@ const CourseEdit = () => {
     });
   };
 
+  const handleImageRemove = async () => {
+    // console.log('Remove Image');
+    try {
+      setValues({ ...values, loading: true });
+      const res = await axios.post('/api/courses/remove-image', { image });
+
+      setImage({});
+      setPreview('');
+      setUploadButtonText('Upload Image');
+      setValues({ ...values, loading: false });
+    } catch (err) {
+      console.log(err);
+      setValues({ ...values, loading: false });
+      toast.error('Image remove failed. Try Later.');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(values);
     try {
-      const { data } = await axios.put('/api/course', {
+      const { data } = await axios.put(`/api/course/${slug}`, {
         ...values,
         image,
       });
@@ -85,10 +103,12 @@ const CourseEdit = () => {
     <InstructorRoute>
       <h1 className='jumbotron text-center square'>Update Course</h1>
       {/* {JSON.stringify(values)} */}
+      {/* {JSON.stringify(slug)} */}
       <div className='pt-3 pb-3'>
         <CourseCreateForm
           handleSubmit={handleSubmit}
           handleImage={handleImage}
+          handleImageRemove={handleImageRemove}
           handleChange={handleChange}
           values={values}
           setValues={setValues}

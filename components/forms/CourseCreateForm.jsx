@@ -10,7 +10,7 @@ const CourseCreateForm = ({
   setValues,
   preview,
   uploadButtonText,
-  handleImageRemove = (f) => f,
+  handleImageRemove,
   editPage = false,
 }) => {
   const children = [];
