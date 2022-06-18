@@ -5,6 +5,8 @@ import CourseCreateForm from '../../../../components/forms/CourseCreateForm';
 import Resizer from 'react-image-file-resizer';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import Item from 'antd/lib/list/Item';
+import { Avatar, List } from 'antd';
 
 const CourseEdit = () => {
   // state
@@ -17,6 +19,7 @@ const CourseEdit = () => {
     loading: false,
     imagePreview: '',
     category: '',
+    lessons: [],
   });
 
   const [image, setImage] = useState({});
@@ -119,6 +122,24 @@ const CourseEdit = () => {
       </div>
       {/* <pre>{JSON.stringify(values, null, 4)}</pre>
       <pre>{JSON.stringify(image, null, 4)}</pre> */}
+
+      <div className='row pb-5'>
+        <div className='col lesson-list'>
+          <h4>{values && values.lessons && values.lessons.length} Lessons</h4>
+          <List
+            itemLayout='horizontal'
+            dataSource={values && values.lessons}
+            renderItem={(item, index) => (
+              <Item>
+                <Item.Meta
+                  avatar={<Avatar>{index + 1}</Avatar>}
+                  title={item.title}
+                ></Item.Meta>
+              </Item>
+            )}
+          ></List>
+        </div>
+      </div>
     </InstructorRoute>
   );
 };
