@@ -102,6 +102,14 @@ const CourseEdit = () => {
     }
   };
 
+  const handleDrag = (e, index) => {
+    console.log('ON DRAG =>', index);
+  };
+
+  const handleDrop = (e, index) => {
+    console.log('ON DROP =>', index);
+  };
+
   return (
     <InstructorRoute>
       <h1 className='jumbotron text-center square'>Update Course</h1>
@@ -122,15 +130,20 @@ const CourseEdit = () => {
       </div>
       {/* <pre>{JSON.stringify(values, null, 4)}</pre>
       <pre>{JSON.stringify(image, null, 4)}</pre> */}
-
+      <hr />
       <div className='row pb-5'>
         <div className='col lesson-list'>
           <h4>{values && values.lessons && values.lessons.length} Lessons</h4>
           <List
+            onDragOver={(e) => e.preventDefault()}
             itemLayout='horizontal'
             dataSource={values && values.lessons}
             renderItem={(item, index) => (
-              <Item>
+              <Item
+                draggable={true}
+                onDragStart={(e) => handleDrag(e, index)}
+                onDrop={(e) => handleDrop(e, index)}
+              >
                 <Item.Meta
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
