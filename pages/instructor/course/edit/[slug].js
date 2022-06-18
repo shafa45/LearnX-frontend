@@ -65,34 +65,17 @@ const CourseEdit = () => {
     });
   };
 
-  const handleImageRemove = async () => {
-    // console.log('Remove Image');
-    try {
-      setValues({ ...values, loading: true });
-      const res = await axios.post('/api/courses/remove-image', { image });
-
-      setImage({});
-      setPreview('');
-      setUploadButtonText('Upload Image');
-      setValues({ ...values, loading: false });
-    } catch (err) {
-      console.log(err);
-      setValues({ ...values, loading: false });
-      toast.error('Image remove failed. Try Later.');
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(values);
     try {
-      const { data } = await axios.post('/api/course', {
+      const { data } = await axios.put('/api/course', {
         ...values,
         image,
       });
 
-      toast.success('Great! Now you can start adding lessons.');
-      router.push('/instructor');
+      toast.success('Course Updated!');
+      // router.push('/instructor');
     } catch (err) {
       toast.error(err.response.data);
     }
@@ -101,7 +84,7 @@ const CourseEdit = () => {
   return (
     <InstructorRoute>
       <h1 className='jumbotron text-center square'>Update Course</h1>
-      {JSON.stringify(values)}
+      {/* {JSON.stringify(values)} */}
       <div className='pt-3 pb-3'>
         <CourseCreateForm
           handleSubmit={handleSubmit}
@@ -111,7 +94,7 @@ const CourseEdit = () => {
           setValues={setValues}
           preview={preview}
           uploadButtonText={uploadButtonText}
-          handleImageRemove={handleImageRemove}
+          editPage={true}
         />
       </div>
       {/* <pre>{JSON.stringify(values, null, 4)}</pre>
