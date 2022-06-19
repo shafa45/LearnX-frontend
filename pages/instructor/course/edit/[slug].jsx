@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import Item from 'antd/lib/list/Item';
 import { Avatar, List } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const CourseEdit = () => {
   // state
@@ -127,6 +128,20 @@ const CourseEdit = () => {
     toast.success('Lesson rearrange successfully');
   };
 
+  const handleDelete = async (index) => {
+    const answer = window.confirm('Are you sure you want to delete?');
+    if (!answer) return;
+
+    let allLessons = values.lessons;
+    const removed = allLessons.splice(index, 1);
+    // console.log(removed);
+    setValues({ ...values, lessons: allLessons });
+
+    // send request to backend
+    const { data } = await axios.put(`/api/course/${slug}/${removed[0]._id}`);
+    console.log(`Lesson deleted: `, data);
+  };
+
   return (
     <InstructorRoute>
       <h1 className='jumbotron text-center square'>Update Course</h1>
@@ -160,6 +175,12 @@ const CourseEdit = () => {
                 draggable={true}
                 onDragStart={(e) => handleDrag(e, index)}
                 onDrop={(e) => handleDrop(e, index)}
+                actions={[
+                  <DeleteOutlined
+                    className='text-danger'
+                    onClick={() => handleDelete(index)}
+                  />,
+                ]}
               >
                 <Item.Meta
                   avatar={<Avatar>{index + 1}</Avatar>}
