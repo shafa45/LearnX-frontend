@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import Item from 'antd/lib/list/Item';
 import { Avatar, List, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import UpdateLessonForm from '../../../../components/forms/updateLessonForm';
 
 const CourseEdit = () => {
   // state
@@ -30,6 +31,9 @@ const CourseEdit = () => {
   // state for lesson update
   const [visible, setVisible] = useState(false);
   const [current, setCurrent] = useState({});
+  const [uploadVideoBtnText, setVideoUploadBtnText] = useState('Upload Video');
+  const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
 
   // router
   const router = useRouter();
@@ -146,6 +150,18 @@ const CourseEdit = () => {
     console.log(`Lesson deleted: `, data);
   };
 
+  /**
+   * lesson update functions
+   */
+
+  const handleUpload = () => {
+    console.log('handle video');
+  };
+
+  const handleUpdateLesson = () => {
+    console.log('handle update lesson');
+  };
+
   return (
     <InstructorRoute>
       <h1 className='jumbotron text-center square'>Update Course</h1>
@@ -208,7 +224,18 @@ const CourseEdit = () => {
         footer={null}
       >
         Update lesson form
-        <pre>{JSON.stringify(current, null, 4)}</pre>
+        {/* <pre>{JSON.stringify(current, null, 4)}</pre>
+        
+        */}
+        <UpdateLessonForm
+          current={current}
+          setCurrent={setCurrent}
+          handleUpload={handleUpload}
+          handleUpdateLesson={handleUpdateLesson}
+          uploadVideoBtnText={uploadVideoBtnText}
+          progress={progress}
+          uploading={uploading}
+        />
       </Modal>
     </InstructorRoute>
   );

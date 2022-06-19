@@ -30,6 +30,7 @@ const AddLessonForm = ({
           rows='7'
           onChange={(e) => setValues({ ...values, content: e.target.value })}
           value={values.content}
+          placeholder='Content'
         />
 
         <div className='d-flex justify-content-center'>
