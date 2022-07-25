@@ -12,6 +12,7 @@ import UpdateLessonForm from '../../../../components/forms/updateLessonForm';
 
 const CourseEdit = () => {
   // state
+
   const [values, setValues] = useState({
     name: '',
     description: '',
@@ -78,8 +79,9 @@ const CourseEdit = () => {
     });
   };
 
-  const handleImageRemove = async () => {
+  const handleImageRemove = async (e) => {
     // console.log('Remove Image');
+    e.preventDefault();
     try {
       setValues({ ...values, loading: true });
       const res = await axios.post('/api/courses/remove-image', { image });
@@ -113,11 +115,13 @@ const CourseEdit = () => {
 
   const handleDrag = (e, index) => {
     // console.log('ON DRAG =>', index);
+    e.preventDefault();
     e.dataTransfer.setData('itemIndex', index);
   };
 
   const handleDrop = async (e, index) => {
     // console.log('ON DROP =>', index);
+    e.preventDefault();
     const dragItemIndex = e.dataTransfer.getData('itemIndex');
     const targetItemIndex = index;
     let allLessons = values.lessons;
@@ -156,6 +160,8 @@ const CourseEdit = () => {
 
   const handleVideo = async (e) => {
     // remove previous video
+    e.preventDefault();
+
     if (current.video && current.video.Location) {
       const res = await axios.post(
         `/api/course/video-remove/${values.instructor._id}`,
@@ -188,8 +194,17 @@ const CourseEdit = () => {
     setUploading(false);
   };
 
-  const handleUpdateLesson = () => {
-    console.log('handle update lesson');
+  const handleUpdateLesson = async (e) => {
+    // console.log('handle update lesson');
+    e.preventDefault();
+    const { data } = await axios.put(
+      `/api/course/lesson/${slug}/${current._id}`,
+      current
+    );
+    setVideoUploadBtnText('Upload Video');
+    setVisible(false);
+    toast.success('Lesson updated');
+    setCourse(data);
   };
 
   return (
