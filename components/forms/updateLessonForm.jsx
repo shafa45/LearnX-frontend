@@ -1,5 +1,6 @@
-import { Button, Progress, Tooltip } from 'antd';
+import { Button, Progress, Switch } from 'antd';
 import { CloseCircleFilled } from '@ant-design/icons';
+import ReactPlayer from 'react-player';
 
 const UpdateLessonForm = ({
   current,
@@ -12,6 +13,7 @@ const UpdateLessonForm = ({
 }) => {
   return (
     <div className='container pt-3 '>
+      {/* {JSON.stringify(current, null, 4)} */}
       <form onSubmit={handleUpdateLesson}>
         <input
           type='text'
@@ -30,7 +32,19 @@ const UpdateLessonForm = ({
           value={current.content}
         />
 
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center flex-column '>
+          {!uploading && current.video && current.video.Location && (
+            <div className='pt-2 d-flex justify-content-center'>
+              {/* show video player on react player */}
+              <ReactPlayer
+                url={current.video.Location}
+                width='100%'
+                height='100%'
+                controls={true}
+              />
+            </div>
+          )}
+
           <label className='btn btn-dark btn-block text-left mt-3'>
             {uploadVideoBtnText}
             <input
@@ -40,12 +54,6 @@ const UpdateLessonForm = ({
               onChange={handleUpload}
             />
           </label>
-
-          {!uploading && current.video && current.video.Location && (
-            <div className='pt-2 d-flex justify-content-center'>
-              {/* show video player on react player */}
-            </div>
-          )}
         </div>
 
         {progress > 0 && (
@@ -58,6 +66,13 @@ const UpdateLessonForm = ({
 
         <div className='d-flex justify-content-between pt-2'>
           <span className='pt-3 badge'>Preview</span>
+          <Switch
+            className='float-right mt-2'
+            disabled={uploading}
+            defaultChecked={current.free_preview}
+            name='free_preview'
+            onChange={(e) => setCurrent({ ...current, free_preview: e })}
+          />
         </div>
 
         <Button
