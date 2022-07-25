@@ -8,7 +8,7 @@ const UpdateLessonForm = ({
   handleUpdateLesson,
   uploading,
   uploadVideoBtnText,
-  handleUpload,
+  handleVideo,
   progress,
 }) => {
   return (
@@ -47,12 +47,7 @@ const UpdateLessonForm = ({
 
           <label className='btn btn-dark btn-block text-left mt-3'>
             {uploadVideoBtnText}
-            <input
-              type='file'
-              accept='video/*'
-              hidden
-              onChange={handleUpload}
-            />
+            <input type='file' accept='video/*' hidden onChange={handleVideo} />
           </label>
         </div>
 

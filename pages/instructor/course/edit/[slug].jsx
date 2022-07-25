@@ -154,8 +154,38 @@ const CourseEdit = () => {
    * lesson update functions
    */
 
-  const handleUpload = () => {
-    console.log('handle video');
+  const handleVideo = async (e) => {
+    // remove previous video
+    if (current.video && current.video.Location) {
+      const res = await axios.post(
+        `/api/course/video-remove/${values.instructor._id}`,
+        current.video
+      );
+
+      console.log('REMOVED => ', res);
+    }
+
+    // upload new video
+    const file = e.target.files[0];
+    setVideoUploadBtnText(file.name);
+    setUploading(true);
+    // send video as form data
+    const videoData = new FormData();
+    videoData.append('video', file);
+    videoData.append('courseId', values._id);
+    // save progress bar and send video data to backend
+    const { data } = await axios.post(
+      `/api/course/video-upload/${values.instructor._id}`,
+      videoData,
+      {
+        onUploadProgress: (e) =>
+          setProgress(Math.round((e.loaded * 100) / e.total)),
+      }
+    );
+
+    console.log(data);
+    setCurrent({ ...current, video: data });
+    setUploading(false);
   };
 
   const handleUpdateLesson = () => {
@@ -230,7 +260,7 @@ const CourseEdit = () => {
         <UpdateLessonForm
           current={current}
           setCurrent={setCurrent}
-          handleUpload={handleUpload}
+          handleVideo={handleVideo}
           handleUpdateLesson={handleUpdateLesson}
           uploadVideoBtnText={uploadVideoBtnText}
           progress={progress}
