@@ -110,9 +110,40 @@ const CourseView = () => {
     }
   };
 
-  const handlePublish = async (courseId) => {};
+  const handlePublish = async (e, courseId) => {
+    e.preventDefault();
 
-  const handleUnpublish = async (courseId) => {};
+    try {
+      let answer = window.confirm(
+        'Once you publish your course, it will be live in the marketplace for users to enroll'
+      );
+
+      if (!answer) return true;
+
+      const { data } = await axios.post(`/api/course/publish/${courseId}`);
+
+      toast.success('Course published');
+    } catch (err) {
+      toast.error('Course publish failed');
+    }
+  };
+
+  const handleUnpublish = async (courseId) => {
+    e.preventDefault();
+
+    try {
+      let answer = window.confirm(
+        'Once you unpublish your course, it will not be available for users to enroll'
+      );
+      if (!answer) return;
+
+      const { data } = await axios.post(`/api/course/unpublish/${courseId}`);
+
+      toast.success('course is unpublished');
+    } catch (err) {
+      toast.error('Course unpublish failed');
+    }
+  };
 
   return (
     <InstructorRoute>
@@ -155,14 +186,14 @@ const CourseView = () => {
                     ) : course.published ? (
                       <Tooltip title='Unpublish'>
                         <CloseOutlined
-                          onClick={(e) => handleUnpublish(course._id)}
+                          onClick={(e) => handleUnpublish(e, course._id)}
                           className='h5 pointer text-danger'
                         />
                       </Tooltip>
                     ) : (
                       <Tooltip title='Publish'>
                         <CheckOutlined
-                          onClick={(e) => handlePublish(course._id)}
+                          onClick={(e) => handlePublish(e, course._id)}
                           className='h5 pointer text-success'
                         />
                       </Tooltip>
