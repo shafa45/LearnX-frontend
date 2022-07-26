@@ -1,4 +1,10 @@
-import { CheckOutlined, EditOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  CheckOutlined,
+  CloseOutlined,
+  EditOutlined,
+  QuestionOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { Avatar, Button, Modal, Tooltip, List } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -104,6 +110,10 @@ const CourseView = () => {
     }
   };
 
+  const handlePublish = async (courseId) => {};
+
+  const handleUnpublish = async (courseId) => {};
+
   return (
     <InstructorRoute>
       <div className='container-fluid pt-3'>
@@ -137,9 +147,26 @@ const CourseView = () => {
                         }
                       />
                     </Tooltip>
-                    <Tooltip title='Publish '>
-                      <CheckOutlined className='h5 pointer text-danger ' />
-                    </Tooltip>
+
+                    {course.lessons && course.lessons.length < 5 ? (
+                      <Tooltip title='Min 5 lesson required to publish'>
+                        <QuestionOutlined className='h5 pointer text-danger' />
+                      </Tooltip>
+                    ) : course.published ? (
+                      <Tooltip title='Unpublish'>
+                        <CloseOutlined
+                          onClick={(e) => handleUnpublish(course._id)}
+                          className='h5 pointer text-danger'
+                        />
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title='Publish'>
+                        <CheckOutlined
+                          onClick={(e) => handlePublish(course._id)}
+                          className='h5 pointer text-success'
+                        />
+                      </Tooltip>
+                    )}
                   </div>
                 </div>
               </div>

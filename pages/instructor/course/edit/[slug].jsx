@@ -204,7 +204,14 @@ const CourseEdit = () => {
     setVideoUploadBtnText('Upload Video');
     setVisible(false);
     toast.success('Lesson updated');
-    setCourse(data);
+
+    // update UI
+    if (data.success) {
+      let arr = values.lessons;
+      const index = arr.findIndex((item) => item._id === current._id);
+      arr[index] = current;
+      setValues({ ...values, lessons: [...arr] });
+    }
   };
 
   return (
