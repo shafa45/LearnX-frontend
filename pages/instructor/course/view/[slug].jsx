@@ -100,7 +100,7 @@ const CourseView = () => {
         `/api/course/video-remove/${course.instructor._id}`,
         values.video
       );
-      console.log(data);
+      // console.log(data);
       setValues({ ...values, video: {} });
       setUploading(false);
       setUploadBtnText('Upload another video');

@@ -3,21 +3,6 @@ import { useState, useEffect } from 'react';
 import CourseCard from '../components/cards/courseCard';
 
 const Index = ({ courses }) => {
-  // const [courses, setCourses] = useState([]);
-
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     const { data } = await axios.get('/api/courses');
-  //     setCourses(data);
-  //     setIsLoading(false);
-  //   };
-  //   fetchCourses();
-  // }, []);
-
-  // console.log(courses);
-
   return (
     <>
       <h1 className='jumbotron text-center bg-primary square'>
