@@ -5,6 +5,8 @@ import SingleCourseJumbotron from '../../components/cards/SingleCourseJumbotron'
 import PreviewModal from '../../components/modal/PreviewModal';
 PreviewModal;
 
+import SingleCourseLessons from '../../components/cards/SingleCourseLessons';
+
 const SingleCourse = ({ course }) => {
   // state
   const [showModal, setShowModal] = useState(false);
@@ -25,13 +27,23 @@ const SingleCourse = ({ course }) => {
         setPreview={setPreview}
       />
 
-     { showModal &&  <PreviewModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        preview={preview}
-        setPreview={setPreview}
-      />
-    }
+      {showModal && (
+        <PreviewModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          preview={preview}
+          setPreview={setPreview}
+        />
+      )}
+
+      {course.lessons && (
+        <SingleCourseLessons
+          lessons={course.lessons}
+          setPreview={setPreview}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };
