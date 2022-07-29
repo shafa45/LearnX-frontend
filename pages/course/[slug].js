@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Badge } from 'antd';
+import { Badge, Modal } from 'antd';
 import { currencyFormatter } from '../../utils/helpers';
+import ReactPlayer from 'react-player';
 
 const SingleCourse = ({ course }) => {
+
+// state
+const [showModal, setShowModal] = useState(false);
+const [preview, setPreview]  = useState("")
+
   const router = useRouter();
   const { slug } = router.query;
 
@@ -12,7 +18,7 @@ const SingleCourse = ({ course }) => {
     name,
     description,
     instructor,
-    updateAt,
+    updatedAt,
     lessons,
     image,
     price,
@@ -32,30 +38,50 @@ const SingleCourse = ({ course }) => {
             {description && description.substring(0, 100)}...
           </p>
           {/* {category} */}
-          <Badge count={category} style={{backgroundColor: '#87d068'}}
-          className='pb-2 mr-2'
+          <Badge
+            count={category}
+            style={{ backgroundColor: '#87d068' }}
+            className='pb-2 mr-2'
           />
           {/* {author} */}
           <p>Created by {instructor.name}</p>
           {/* {updated at} */}
-            <p>Updated at {new Date(updateAt).toLocaleDateString()}</p>
+          <p>Last updated  {new Date(updatedAt).toLocaleDateString()}</p>
           {/* {price} */}
-          <h4 className="text-light">
-          {
-          paid ?
-          currencyFormatter({currency: 'USD', amount: price})
-        : "Free"
-        }
+          <h4 className='text-light'>
+            {paid
+              ? currencyFormatter({ currency: 'USD', amount: price })
+              : 'Free'}
           </h4>
         </div>
         <div className='col-md-4'>
           {/* show video preview of course image */}
-          <p>show course image</p>
-          <p>show enroll button</p>
+
+          {lessons && lessons.length > 0 && lessons[0].video &&lessons[0].video.Location ? (
+            <div onClick={() => {
+                setPreview(lessons[0].video.Location)
+                setShowModal(!showModal)
+            }}>
+              <ReactPlayer
+                className='react-player-div'
+                url={lessons[0].video.Location}
+                width='100%'
+                light={image.Location}
+                height='275px'
+                controls={true}
+              />
+            </div>
+          ) : (
+            <img src={image.Location} alt={name} className='img-fluid' />
+          )}
 
           {/* enroll button */}
         </div>
       </div>
+
+      {showModal ? 
+     
+      course.lessons[0].video.Location: "don'show" }
     </>
   );
 };
