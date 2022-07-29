@@ -8,8 +8,7 @@ const PreviewModal = ({ showModal, setShowModal, preview }) => {
         title='Course Preview'
         visible={showModal}
         onCancel={() => setShowModal(!showModal)}
-        width={720}
-        height={480}
+        width= {720}
         footer={null}
       >
         <div className='wrapper'>
@@ -17,8 +16,8 @@ const PreviewModal = ({ showModal, setShowModal, preview }) => {
             url={preview}
             playing={showModal}
             controls={true}
-            width={720}
-            height={480}
+            width='100%'
+            height='100%'
           />
         </div>
       </Modal>

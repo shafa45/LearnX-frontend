@@ -21,7 +21,26 @@ const SingleCourseLessons = ({
                 <Item.Meta
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
-                ></Item.Meta>
+                />
+                  {item.video && item.video.Location && item.free_preview && (
+                    <span
+                    style={{
+                        cursor: 'pointer',
+                        color: '#fa525e',
+                        fontWeight: 'bold',
+                        marginLeft: '1rem',
+
+                    }}
+                      onClick={() => {
+                        setPreview(item.video.Location);
+                        setShowModal(!showModal);
+                      }}
+                    >
+
+                    Preview
+                    </span>
+                  )}
+               
               </Item>
             )}
           />
