@@ -6,6 +6,7 @@ import PreviewModal from '../../components/modal/PreviewModal';
 PreviewModal;
 import SingleCourseLessons from '../../components/cards/SingleCourseLessons';
 import { Context } from '../../context';
+import { toast } from 'react-toastify';
 
 const SingleCourse = ({ course }) => {
   // state
@@ -22,15 +23,14 @@ const SingleCourse = ({ course }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    if(user && course) checkEnrollment()
-    
+    if (user && course) checkEnrollment();
   }, [user, course]);
 
   const checkEnrollment = async () => {
-    const {data} = await axios.get(`/api/check-enrollment/${course._id}`);
-    console.log(data)
+    const { data } = await axios.get(`/api/check-enrollment/${course._id}`);
+    console.log(data);
     setEnrolled(data);
-  }
+  };
 
   const router = useRouter();
   const { slug } = router.query;
@@ -39,8 +39,31 @@ const SingleCourse = ({ course }) => {
     console.log('handlePaidEnrollment');
   };
 
-  const handleFreeEnrollment = () => {
-    console.log('handleFreeEnrollment');
+  const handleFreeEnrollment = async (e) => {
+    // console.log('handleFreeEnrollment');
+    e.preventDefault();
+    try {
+      // check if user is logged in
+      if (!user) {
+        router.push('/login');
+        return;
+      }
+
+      // check if already enrolled
+      if (enrolled.status) {
+        return router.push(`/user/course/${enrolled.course.slug}`);
+      }
+
+      setLoading(true);
+      const { data } = await axios.post(`/api/free-enrollment/${course._id}`);
+      toast.success(data.message);
+      setLoading(false);
+      router.push(`/user/course/${enrolled.course.slug}`);
+    } catch (err) {
+      toast.error('Enrollment failed. Please try again later.');
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   return (
